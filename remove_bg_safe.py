@@ -8,25 +8,23 @@ logging.basicConfig(level=logging.INFO)
 
 def remove_background(input_path, output_path):
     try:
-        # Open the input image
-        input_image = Image.open(input_path)
-        logging.info(f"Opened image {input_path}")
+        # Open the input image using 'with' to ensure it's closed properly
+        with Image.open(input_path) as input_image:
+            logging.info(f"Opened image {input_path}")
 
-        # Remove the background
-        output_image = remove(input_image)
-        logging.info("Background removed")
+            # Remove the background
+            output_image = remove(input_image)
+            logging.info("Background removed")
 
-        # Convert to RGB mode if necessary
-        if output_image.mode != 'RGB':
-            output_image = output_image.convert('RGB')
-            logging.info("Converted to RGB mode")
+            # Convert to RGB mode if necessary
+            if output_image.mode != 'RGB':
+                output_image = output_image.convert('RGB')
+                logging.info("Converted to RGB mode")
 
-        # Save the output image
-        output_image.save(output_path)
-        logging.info(f"Saved output image {output_path}")
+            # Save the output image
+            output_image.save(output_path)
+            logging.info(f"Saved output image {output_path}")
 
-        # Close the input image
-        input_image.close()
     except FileNotFoundError:
         logging.error(f"The file {input_path} does not exist.")
     except Exception as e:
